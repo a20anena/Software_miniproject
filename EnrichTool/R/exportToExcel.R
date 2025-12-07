@@ -1,20 +1,18 @@
-#' Export results to an Excel file
-#'
-#' This function saves a data frame to an Excel file.
-#'
-#' @param results A data frame containing analysis results.
-#' @param file_name A string with the output file name.
-#'
-#' @return Writes an Excel file to your working directory.
-#' @export
+# export results to an Excel file
+
+# this function takes a data frame and saves it as an .xlsx file
 exportToExcel <- function(results, file_name = "results.xlsx") {
-  # Load the required library
+
+  # check if the openxlsx package is available
+  # (we need it to write Excel files)
   if (!requireNamespace("openxlsx", quietly = TRUE)) {
-    stop("Package 'openxlsx' is required but not installed.")
+    stop("The 'openxlsx' package is not installed.")
   }
 
-  # Write the file
+  # save the data to the Excel file
   openxlsx::write.xlsx(results, file = file_name)
 
+  # tell the user the file was created
   return(paste("File saved as", file_name))
 }
+
