@@ -3,16 +3,15 @@
 # this function takes a data frame and saves it as an .xlsx file
 exportToExcel <- function(results, file_name = "results.xlsx") {
 
-  # check if the openxlsx package is available
-  # (we need it to write Excel files)
+  # check if the openxlsx package is installed
+  # (we need it to actually write Excel files)
   if (!requireNamespace("openxlsx", quietly = TRUE)) {
     stop("The 'openxlsx' package is not installed.")
   }
 
-  # save the data to the Excel file
+  # write the data to the Excel file
   openxlsx::write.xlsx(results, file = file_name)
 
-  # tell the user the file was created
+  # let the user know the file was saved
   return(paste("File saved as", file_name))
 }
-
