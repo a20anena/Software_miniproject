@@ -1,4 +1,4 @@
-#' importRna
+#' import_RNA
 #'
 #' @description
 #' Imports RNA-seq count data and performs filtering on log2 CPM
@@ -12,9 +12,9 @@
 #'
 #' @example
 #' library(EnrhichTool)
-#' importRna("path/to/file.txt", 1)
+#' import_RNA("path/to/file.txt", cutoff = 1)
 #'
-importRna <- function(file, cutoff){
+import_RNA <- function(file, cutoff = 1){
   mat <- read.table(file, header=TRUE, as.is=TRUE, row.names=1, sep="\t")
 
   meanLog2cpm <- rowMeans(log2(edgeR::cpm(mat) + 1))
