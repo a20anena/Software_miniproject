@@ -1,38 +1,54 @@
 #' @description
-#' This function compares two groups and finds genes that look different.
-#' It just calculates a simple log2 fold change. Nothing advanced.
-
-#' @param count_data A data frame with gene counts.
-#' @param group A vector showing group labels for each sample.
-#' @param log2fc_cutoff The fold change limit. Default is 1.
-
-#' @return A small data frame with genes that pass the cutoff.
+#' Find differentially expressed genes with DESeq2.
+#'
+#' @param count_data A matrix or data frame with raw counts.
+#'   Rows are genes, columns are samples.
+#' @param group A vector with the group label for each sample
+#'   (for example c("A","A","B","B")).
+#' @param alpha FDR cut-off for padj. Default is 0.05.
+#' @param lfc_cutoff Minimum |log2 fold change| to keep. Default is 1.
+#'
+#' @return A data frame with one row per gene and the columns:
+#'   gene, log2FoldChange, pvalue and padj.
 #'
 #' @examples
-#' # deg <- degAnalysis(my_counts, c("A","A","B","B"))
+#' # deg <- degAnalysis(my_counts, my_group)
 #'
 #' @export
-degAnalysis <- function(count_data, group, log2fc_cutoff = 1) {
+degAnalysis <- function(count_data, group, alpha = 0.05, lfc_cutoff = 1) {
 
-  # pick samples in each group
-  g1 <- count_data[, group == unique(group)[1]]
-  g2 <- count_data[, group == unique(group)[2]]
+  # check that DESeq2 is available
+  if (!requireNamespace("DESeq2", quietly = TRUE)) {
+    stop("Package 'DESeq2' is needed but not installed.")
+  }
 
-  # mean counts
-  m1 <- rowMeans(g1)
-  m2 <- rowMeans(g2)
+  # make a small data frame with the group information
+  col_data <- data.frame(group = factor(group))
+  rownames(col_data) <- colnames(count_data)
 
-  # fold change
-  log2fc <- log2(m2 + 1) - log2(m1 + 1)
-
-  # choose genes
-  keep <- abs(log2fc) >= log2fc_cutoff
-
-  # output
-  result <- data.frame(
-    gene = rownames(count_data),
-    log2FC = log2fc
+  # build DESeq2 object from the raw counts
+  dds <- DESeq2::DESeqDataSetFromMatrix(
+    countData = round(count_data),  # counts must be integers
+    colData   = col_data,
+    design    = ~ group
   )
 
-  return(result[keep, ])
+  # run the DESeq2 pipeline (size factors, dispersion, tests, etc.)
+  dds <- DESeq2::DESeq(dds)
+
+  # get results: log2FC, p-value, padj
+  res    <- DESeq2::results(dds)
+  res_df <- as.data.frame(res)
+
+  # add gene names as a column
+  res_df$gene <- rownames(res_df)
+
+  # keep only useful columns and remove NAs
+  res_df <- res_df[, c("gene", "log2FoldChange", "pvalue", "padj")]
+  res_df <- res_df[!is.na(res_df$padj), ]
+
+  # apply cut-offs: FDR < alpha and big enough |log2FC|
+  keep <- res_df$padj < alpha & abs(res_df$log2FoldChange) >= lfc_cutoff
+  res_df[keep, ]
 }
+
