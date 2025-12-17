@@ -1,5 +1,4 @@
-#' ora_res
-#'
+
 #' @description
 #' Performs over-representation analysis on set of genes.
 #'
