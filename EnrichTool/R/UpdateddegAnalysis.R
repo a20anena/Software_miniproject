@@ -1,3 +1,6 @@
+
+
+
 #' Differential expression analysis with edgeR
 #'
 #' This function runs a standard edgeR workflow to find genes that are
@@ -14,55 +17,47 @@
 #'   gene, logFC, PValue, FDR
 #'
 #' @examples
-#' # data <- import_RNA("E-MTAB-2523.counts.txt",
-#' #                    "E-MTAB-2523_sample table.txt")
-#' #
-#' # filtered_counts <- filterLowExpressed(
-#' #   count_data = data$counts,
-#' #   group = data$samples$disease
-#' # )
-#' #
-#' # deg_res <- degAnalysis(
-#' #   count_data = filtered_counts,
-#' #   group = data$samples$disease
-#' # )
-#' #
-#' # head(deg_res)
+#' # deg <- degAnalysis(my_counts, my_group)
+
+
 
 #'
 #' @export
 degAnalysis <- function(count_data, group, alpha = 0.05, lfc_cutoff = 1) {
-
+  
   if (!requireNamespace("edgeR", quietly = TRUE)) {
     stop("Package 'edgeR' is needed but not installed.")
   }
-
+  
   group <- factor(group)
-
+  
   # Build edgeR object
   y <- edgeR::DGEList(counts = count_data, group = group)
-
+  
   # Library size normalization (TMM)
   y <- edgeR::calcNormFactors(y)
-
+  
   # Design matrix for two-group comparison
   design <- stats::model.matrix(~ group)
-
+  
   # Estimate dispersion and fit model
   y <- edgeR::estimateDisp(y, design)
   fit <- edgeR::glmFit(y, design)
-
+  
   # Test the group effect (2nd coefficient is the group difference)
   lrt <- edgeR::glmLRT(fit, coef = 2)
-
+  
   # Get full results table
   tab <- edgeR::topTags(lrt, n = Inf)$table
   tab$gene <- rownames(tab)
-
+  
   # Keep only the columns we need
   tab <- tab[, c("gene", "logFC", "PValue", "FDR")]
-
+  
   # Apply cutoffs
   keep <- tab$FDR < alpha & abs(tab$logFC) >= lfc_cutoff
   tab[keep, ]
 }
+
+
+
