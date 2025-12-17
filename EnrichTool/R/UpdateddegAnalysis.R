@@ -14,7 +14,21 @@
 #'   gene, logFC, PValue, FDR
 #'
 #' @examples
-#' # deg <- degAnalysis(my_counts, my_group)
+#' # data <- import_RNA("E-MTAB-2523.counts.txt",
+#' #                    "E-MTAB-2523_sample table.txt")
+#' #
+#' # filtered_counts <- filterLowExpressed(
+#' #   count_data = data$counts,
+#' #   group = data$samples$disease
+#' # )
+#' #
+#' # deg_res <- degAnalysis(
+#' #   count_data = filtered_counts,
+#' #   group = data$samples$disease
+#' # )
+#' #
+#' # head(deg_res)
+
 #'
 #' @export
 degAnalysis <- function(count_data, group, alpha = 0.05, lfc_cutoff = 1) {
