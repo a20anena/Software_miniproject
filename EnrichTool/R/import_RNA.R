@@ -48,3 +48,5 @@ data <- import_RNA(
 names(data)
 
 dim(data$counts)
+head(data$samples)
+
