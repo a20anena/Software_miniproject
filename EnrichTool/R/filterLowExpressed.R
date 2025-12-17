@@ -5,7 +5,7 @@
 #' It uses edgeR's recommended filtering approach.
 #'
 #' @param count_data Raw count matrix (genes x samples)
-#' @param group Group labels for each sample
+#' @param Group labels for each sample (length = number of columns in count_data)
 #'
 #' @return Filtered count matrix
 #' @examples
