@@ -1,3 +1,21 @@
+# Test import_RNA function
+
+data <- import_RNA(
+  "E-MTAB-2523.counts.txt",
+  "E-MTAB-2523_sample table.txt"
+)
+
+# Check structure
+names(data)
+
+# Check dimensions of count matrix
+dim(data$counts)
+
+# Look at sample metadata
+head(data$samples)
+
+
+
 #This is an example script on how to run the functions
 
 #Import count data and filter on log 2 cpm
