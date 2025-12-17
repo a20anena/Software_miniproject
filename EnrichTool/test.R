@@ -35,7 +35,15 @@ stopifnot(ncol(filtered_counts) == ncol(data$counts))
 head(filtered_counts[, 1:3])
 
 
+# Test UpdateddegAnalysis.R
 
+deg_res <- degAnalysis(
+  count_data = filtered_counts,
+  group = data$samples$disease
+)
+
+head(deg_res)
+dim(deg_res)
 
 
 
