@@ -45,6 +45,11 @@ deg_res <- degAnalysis(
 head(deg_res)
 dim(deg_res)
 
+head(deg_res)
+summary(deg_res$logFC)
+
+
+
 
 
 
