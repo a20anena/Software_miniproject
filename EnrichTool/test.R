@@ -50,6 +50,34 @@ summary(deg_res$logFC)
 
 
 
+# Test ora_res()
+
+library(clusterProfiler)
+library(org.Hs.eg.db)
+
+gene_data <- deg_res
+rownames(gene_data) <- gene_data$gene
+
+ora <- ora_res(gene_data, key_type = "SYMBOL")
+
+head(as.data.frame(ora$GO))
+head(as.data.frame(ora$KEGG))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
