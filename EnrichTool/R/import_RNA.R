@@ -1,4 +1,4 @@
-list.files("C:/Users/Shamshad/Downloads")
+
 #' Import RNA-seq count data and sample information
 #'
 #' This function reads RNA-seq count data and a sample table from files.
@@ -14,7 +14,7 @@ list.files("C:/Users/Shamshad/Downloads")
 #'
 #' @examples
 #' # data <- import_RNA("counts.txt", "samples.txt")
-#'
+
 #' @export
 import_RNA <- function(count_file, sample_file) {
   
@@ -39,14 +39,4 @@ import_RNA <- function(count_file, sample_file) {
   )
 }
 
-exists("import_RNA")
-data <- import_RNA(
-  "E-MTAB-2523.counts.txt",
-  "E-MTAB-2523_sample table.txt"
-)
-
-names(data)
-
-dim(data$counts)
-head(data$samples)
 
