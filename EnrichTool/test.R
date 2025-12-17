@@ -1,3 +1,5 @@
+library(EnrichTool)
+
 # Test import_RNA function
 
 data <- import_RNA(
@@ -13,6 +15,31 @@ dim(data$counts)
 
 # Look at sample metadata
 head(data$samples)
+
+
+# Test filterLowExpressed()
+
+
+group <- data$samples$disease
+
+filtered_counts <- filterLowExpressed(
+  count_data = data$counts,
+  group = group
+)
+
+dim(data$counts)
+dim(filtered_counts)
+
+stopifnot(ncol(filtered_counts) == ncol(data$counts))
+
+head(filtered_counts[, 1:3])
+
+
+
+
+
+
+
 
 
 
