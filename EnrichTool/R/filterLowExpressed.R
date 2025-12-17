@@ -8,6 +8,14 @@
 #' @param group Group labels for each sample
 #'
 #' @return Filtered count matrix
+#' @examples
+#' # data was created with import_RNA()
+#' filtered_counts <- filterLowExpressed(
+#'   count_data = data$counts,
+#'   group = data$samples$disease
+#' )
+#' dim(filtered_counts)
+
 #'
 #' @export
 filterLowExpressed <- function(count_data, group) {
