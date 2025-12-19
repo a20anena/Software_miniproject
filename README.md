@@ -11,3 +11,13 @@ The package can:
 - create plots for enrichment results
 
 The package was tested on the E-MTAB-2523 colorectal cancer RNA-seq dataset.
+
+# Collaboration note
+
+This project was developed collaboratively using GitHub branches and pull requests
+in the original repository:
+
+https://github.com/Thorn95/Software_miniproject
+
+Both contributors worked on different branches and merged changes via pull requests.
+This repository is a fork that contains the final version of the project.
